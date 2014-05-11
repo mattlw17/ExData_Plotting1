@@ -1,0 +1,16 @@
+## Read in data
+data <- read.table("/Users/bhu235/Documents/RWD/household_power_consumption.txt", header=FALSE,sep=";",skip = 66637, nrows = 2880)
+names(data) <- names(read.table("/Users/bhu235/Documents/RWD/household_power_consumption.txt", header=TRUE,sep=";",nrows=1))
+data$dayOfWeek <- strptime(paste(data$Date, data$Time), format='%d/%m/%Y %H:%M:%S')
+
+png("plot4.png",width=500,height=500)
+par(mfrow=c(2,2))
+plot(data$dayOfWeek,data$Global_active_power, type="l",ylab="Global Active Power (kilowatts)",family="sans",xlab="")
+plot(data$dayOfWeek,data$Voltage, type="l",ylab="Voltage",xlab="datetime",family="sans")
+plot(data$dayOfWeek,data$Sub_metering_1, type="l",ylab="Energy Sub Metering",family="sans",xlab="")
+lines(data$dayOfWeek,data$Sub_metering_2,col="red")
+lines(data$dayOfWeek,data$Sub_metering_3,col="blue")
+op <- par(family = "serif")
+legend("topright",c("Sub_metering_1","Sub_metering_2","Sub_metering_3"),col=c("black","red","blue"),lwd=c(2.5,2.5,2.5))
+plot(data$dayOfWeek,data$Global_reactive_power, type="l",family="sans",xlab="datetime")
+dev.off()
